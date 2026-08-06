@@ -455,6 +455,18 @@ def build_expression(node_id, nodes, visited, inline_reroutes=False):
         alpha = get_node_input(node, 'Alpha', nodes, visited.copy())
         return f'Lerp({a}, {b}, {alpha})'
 
+    if expr_type == 'MaterialExpressionIf':
+        a = get_node_input(node, 'A', nodes, visited.copy())
+        b = get_node_input(node, 'B', nodes, visited.copy())
+        parts = [f'A={a}', f'B={b}']
+        for branch_name, pin_key in (('AGreaterThanB', 'AGreaterThanB'),
+                                     ('AEqualsB', 'AEqualsB'),
+                                     ('ALessThanB', 'ALessThanB')):
+            val = get_node_input(node, pin_key, nodes, visited.copy())
+            if val != 'None':
+                parts.append(f'{branch_name}={val}')
+        return f'If({", ".join(parts)})'
+
     if expr_type == 'MaterialExpressionAdd':
         a = get_node_input(node, 'A', nodes, visited.copy())
         b = get_node_input(node, 'B', nodes, visited.copy())
@@ -612,6 +624,20 @@ def build_expression(node_id, nodes, visited, inline_reroutes=False):
         idx = props.get('CoordinateIndex', '0')
         return f'TextureCoordinate({idx})'
 
+    if expr_type == 'MaterialExpressionSceneTexture':
+        tex_id = props.get('SceneTextureId', 'Unknown')
+        return f'SceneTexture({tex_id})'
+
+    if expr_type == 'MaterialExpressionSceneDepth':
+        inp = get_node_input(node, 'Input', nodes, visited.copy())
+        if inp != 'None':
+            return f'SceneDepth({inp})'
+        return 'SceneDepth'
+
+    if expr_type == 'MaterialExpressionSaturate':
+        inp = get_node_input(node, 'Input', nodes, visited.copy())
+        return f'Saturate({inp})'
+
     if expr_type == 'MaterialExpressionWorldPosition':
         return 'WorldPosition'
 
@@ -633,10 +659,10 @@ def build_expression(node_id, nodes, visited, inline_reroutes=False):
 
     if expr_type == 'MaterialExpressionComponentMask':
         inp = get_node_input(node, 'Input', nodes, visited.copy())
-        r = props.get('R', '0')
-        g = props.get('G', '0')
-        b = props.get('B', '0')
-        a = props.get('A', '0')
+        r = props.get('R', 'False')
+        g = props.get('G', 'False')
+        b = props.get('B', 'False')
+        a = props.get('A', 'False')
         return f'ComponentMask({inp}, R={r}, G={g}, B={b}, A={a})'
 
     if expr_type == 'MaterialExpressionAppendVector':
