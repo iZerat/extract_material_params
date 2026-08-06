@@ -638,6 +638,16 @@ def build_expression(node_id, nodes, visited, inline_reroutes=False):
         inp = get_node_input(node, 'Input', nodes, visited.copy())
         return f'Saturate({inp})'
 
+    if expr_type == 'MaterialExpressionTransform':
+        inp = get_node_input(node, 'Input', nodes, visited.copy())
+        src = props.get('TransformSourceType', '')
+        dst = props.get('TransformType', '')
+        src = src.replace('TRANSFORMSOURCE_', '') if src else ''
+        dst = dst.replace('TRANSFORM_', '') if dst else ''
+        if src and dst:
+            return f'Transform({inp}, {src}->{dst})'
+        return f'Transform({inp})'
+
     if expr_type == 'MaterialExpressionWorldPosition':
         return 'WorldPosition'
 
