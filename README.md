@@ -1,6 +1,6 @@
-# UE Analyze Material Node
+# UE Analyze Material Node Tool
 
-虚幻引擎材质参数提取与可视化工具集。在虚幻引擎材质编辑器中全选所有节点（Ctrl+A）并复制（Ctrl+C），将剪贴板中的纯文本输入到本工具，即可生成结构化的参数统计报告或节点运算关系伪代码。
+虚幻引擎材质参数提取与报告生成工具集。在虚幻引擎材质编辑器中全选所有节点（Ctrl+A）并复制（Ctrl+C），将剪贴板中的纯文本输入到本工具，即可生成结构化的参数统计报告或节点运算关系伪代码。
 
 > ⚠️ 虚幻材质资产本身是 `.uasset` 二进制文件，无法直接读取，须通过虚幻引擎编辑器复制节点获取纯文本内容。
 > 虽然能在编辑器内把材质资产导出为 `.COPY`或 `.T3D` 的纯文本文件，但本工具集还是基于剪贴板的内容进行分析提取，与 `.COPY` `.T3D` 文件并不兼容。
@@ -9,7 +9,7 @@
 
 ## 功能特性
 
-### 1. 参数提取与可视化
+### 1. 参数提取与报告生成
 - **参数提取**：自动识别 Scalar、Vector4、Texture2D、StaticSwitch、Curve、CollectionParameter 等材质参数类型
 - **分组展示**：按材质参数分组（Group）组织，未分组参数单独归类
 - **参数统计**：统计各类型参数数量
@@ -30,14 +30,14 @@
 
 | 文件 | 说明 | 对应功能 |
 | --- | --- | --- |
-| `UE_extract_material_node_params.html` | 浏览器打开即可使用，纯前端实现，无需后端。提供参数统计报告的可视化界面 | 参数提取与可视化 |
-| `start_server.bat` | Windows 批处理脚本，一键启动本地 HTTP 服务器（解决浏览器剪贴板权限问题） | 参数提取与可视化 |
-| `UE_extract_material_node_params.py` | Python 脚本版，支持批量处理由虚幻材质节点文本保存的 `.txt` 文件，输出 TXT / Markdown / HTML 三种格式 | 参数提取与可视化 |
+| `UE_extract_material_node_params.html` | 浏览器打开即可使用，纯前端实现，无需后端。提供参数统计报告的可视化界面 | 参数提取与报告生成 |
+| `start_server.bat` | Windows 批处理脚本，一键启动本地 HTTP 服务器（解决浏览器剪贴板权限问题） | 参数提取与报告生成 |
+| `UE_extract_material_node_params.py` | Python 脚本版，支持批量处理由虚幻材质节点文本保存的 `.txt` 文件，输出 TXT / Markdown / HTML 三种格式 | 参数提取与报告生成 |
 | `UE_extract_material_node_math.py` | 后续开发的拓展功能，从同一来源的 UE 材质复制文本中提取节点运算关系，输出为伪代码（`.txt` 格式），便于分析材质计算逻辑 | 节点运算关系提取 |
 
 ## 使用方法
 
-### 参数提取与可视化
+### 参数提取与报告生成
 
 #### 方法一：浏览器直接打开
 
